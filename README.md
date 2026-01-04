@@ -17,7 +17,7 @@ queries. Built with Node.js, Express, and PostgreSQL.
 ## Tech Stack
 
 - **Backend**: Node.js, Express.js
-- **AI**: Google Gemini AI (gemini-2.0-flash-exp)
+- **AI**: Google Gemini AI (gemini-2.5-flash)
 - **Database**: PostgreSQL
 - **Logging**: Winston
 - **Development**: ESLint, Prettier, Husky
