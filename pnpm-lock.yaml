@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@google/generative-ai':
+        specifier: ^0.24.1
+        version: 0.24.1
       '@langchain/google-vertexai':
         specifier: ^0.2.16
         version: 0.2.16(@langchain/core@0.3.66(openai@5.11.0(zod@3.25.76)))
@@ -1879,8 +1882,7 @@ snapshots:
       '@eslint/core': 0.15.1
       levn: 0.4.1
 
-  '@google/generative-ai@0.24.1':
-    optional: true
+  '@google/generative-ai@0.24.1': {}
 
   '@humanfs/core@0.19.1': {}
 

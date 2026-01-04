@@ -1,13 +1,14 @@
 # Text-to-SQL Powerhouse 🚀
 
-A powerful text-to-SQL conversion system that translates natural language questions into SQL queries. Built with Node.js, Express, and PostgreSQL.
+A powerful text-to-SQL conversion system that translates natural language questions into SQL
+queries. Built with Node.js, Express, and PostgreSQL.
 
 ## Features
 
-- 🤖 **Natural Language Processing** - Convert plain English questions to SQL queries
+- 🤖 **AI-Powered** - Uses Google Gemini AI for intelligent SQL generation
 - 🗄️ **PostgreSQL Integration** - Direct database connectivity and validation
 - 📊 **Multiple Query Types** - Support for SELECT, COUNT, SUM, and JOIN operations
-- 🔍 **Pattern Matching** - Intelligent query pattern recognition
+- 🧠 **Smart Understanding** - Handles complex natural language questions
 - 📝 **Comprehensive Logging** - Winston-based logging with daily rotation
 - ✅ **SQL Validation** - Automatic syntax validation before execution
 - 🔒 **Security** - Built-in protection against write operations (INSERT, UPDATE, DELETE)
@@ -16,6 +17,7 @@ A powerful text-to-SQL conversion system that translates natural language questi
 ## Tech Stack
 
 - **Backend**: Node.js, Express.js
+- **AI**: Google Gemini AI (gemini-2.0-flash-exp)
 - **Database**: PostgreSQL
 - **Logging**: Winston
 - **Development**: ESLint, Prettier, Husky
@@ -55,6 +57,7 @@ The server will start at `http://localhost:3001`
 **Endpoint**: `POST /api/generate-sql`
 
 **Request**:
+
 ```json
 {
   "question": "Show me all active users"
@@ -62,6 +65,7 @@ The server will start at `http://localhost:3001`
 ```
 
 **Response**:
+
 ```json
 {
   "sql": "SELECT * FROM users WHERE status = 'active' LIMIT 100"
@@ -71,17 +75,20 @@ The server will start at `http://localhost:3001`
 ## Supported Query Patterns
 
 ### Count Queries
+
 - "Count all users"
 - "How many products"
 - "Count completed orders"
 
 ### List Queries
+
 - "Show all users"
 - "Show active users"
 - "Show electronics products"
 - "Show completed orders"
 
 ### Aggregate Queries
+
 - "Total revenue"
 - "Top products"
 - "Orders by user"
@@ -191,6 +198,9 @@ DB_PORT=5432
 DB_NAME=text_to_sql_db
 DB_USER=postgres
 DB_PASSWORD=
+
+# Google Gemini AI
+GEMINI_API_KEY=your_gemini_api_key
 
 # Server
 PORT=3001

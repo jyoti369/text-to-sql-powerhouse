@@ -1,6 +1,6 @@
 import express from 'express';
-// Use simple SQL generator instead of AI-based one when Vertex AI is not available
-import { generateSqlFromQuestion } from '../services/sqlGeneratorSimple.js';
+// Use AI-powered SQL generator with Gemini
+import { generateSqlFromQuestion } from '../services/sqlGeneratorAI.js';
 import logger from '../config/logger.js';
 
 const router = express.Router();
