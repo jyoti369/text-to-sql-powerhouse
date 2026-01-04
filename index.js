@@ -20,10 +20,17 @@ setupGracefulShutdown();
 app.use(cors()); // Enable Cross-Origin Resource Sharing
 app.use(express.json()); // Allow the server to understand JSON in request bodies
 app.use(requestLogger); // Add request logging middleware
+app.use(express.static('public')); // Serve static files from public directory
 
 // --- Routes ---
-// A simple health check route to make sure the server is running
+// Serve the demo interface at root
 app.get('/', (req, res) => {
+  logger.info('Demo interface accessed', { service: 'API' });
+  res.sendFile('index.html', { root: 'public' });
+});
+
+// Health check endpoint
+app.get('/health', (_req, res) => {
   logger.info('Health check endpoint accessed', { service: 'API' });
   res.json({
     status: 'healthy',

@@ -188,7 +188,7 @@ export const generateSqlFromQuestion = async question => {
     });
 
     // Call Gemini AI
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash-lite' });
     const result = await model.generateContent(prompt);
     const { response } = result;
     const sqlQuery = cleanSqlResponse(response.text());

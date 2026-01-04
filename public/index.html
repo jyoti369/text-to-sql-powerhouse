@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text-to-SQL Powerhouse - Live Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
+        }
+
+        .input-section {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .result-section {
+            margin-top: 30px;
+        }
+
+        .result-box {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .error {
+            background: #fee;
+            border-left-color: #f44336;
+            color: #c62828;
+        }
+
+        .success {
+            background: #e8f5e9;
+            border-left-color: #4caf50;
+            color: #2e7d32;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .examples {
+            margin-top: 20px;
+        }
+
+        .example-btn {
+            display: inline-block;
+            padding: 8px 16px;
+            margin: 5px;
+            background: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .example-btn:hover {
+            background: #e0e0e0;
+            border-color: #667eea;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .footer {
+            text-align: center;
+            color: white;
+            margin-top: 30px;
+            opacity: 0.9;
+        }
+
+        .footer a {
+            color: white;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Text-to-SQL Powerhouse</h1>
+            <p>AI-powered natural language to SQL query generator</p>
+        </div>
+
+        <div class="card">
+            <div class="input-section">
+                <label for="question">Ask a question in plain English:</label>
+                <textarea
+                    id="question"
+                    placeholder="e.g., Show me users who ordered electronics products"
+                    rows="3"
+                ></textarea>
+            </div>
+
+            <button id="generateBtn" onclick="generateSQL()">
+                Generate SQL Query
+            </button>
+
+            <div class="examples">
+                <strong>Try these examples:</strong><br>
+                <span class="example-btn" onclick="setQuestion('Show all active users')">Show all active users</span>
+                <span class="example-btn" onclick="setQuestion('Which users have purchased electronics?')">Users who bought electronics</span>
+                <span class="example-btn" onclick="setQuestion('Top 5 customers by spending')">Top customers</span>
+                <span class="example-btn" onclick="setQuestion('Products that were never ordered')">Unsold products</span>
+                <span class="example-btn" onclick="setQuestion('Total revenue from completed orders')">Total revenue</span>
+            </div>
+
+            <div class="result-section" id="resultSection" style="display: none;">
+                <label>Generated SQL:</label>
+                <div class="result-box" id="resultBox"></div>
+            </div>
+
+            <div class="stats" id="stats" style="display: none;">
+                <div class="stat-item">
+                    <div class="stat-label">Response Time</div>
+                    <div class="stat-value" id="responseTime">-</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Query Length</div>
+                    <div class="stat-value" id="queryLength">-</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">AI Model</div>
+                    <div class="stat-value" style="font-size: 1rem;">Gemini 2.5</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>
+                Built by <a href="https://github.com/jyoti369" target="_blank">Debojyoti Mandal</a> |
+                <a href="https://github.com/jyoti369/text-to-sql-powerhouse" target="_blank">View Source</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        async function generateSQL() {
+            const question = document.getElementById('question').value.trim();
+            const btn = document.getElementById('generateBtn');
+            const resultSection = document.getElementById('resultSection');
+            const resultBox = document.getElementById('resultBox');
+            const stats = document.getElementById('stats');
+
+            if (!question) {
+                alert('Please enter a question!');
+                return;
+            }
+
+            // Show loading state
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loading"></span>Generating SQL...';
+            resultSection.style.display = 'none';
+            stats.style.display = 'none';
+
+            const startTime = Date.now();
+
+            try {
+                const response = await fetch('/api/generate-sql', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ question })
+                });
+
+                const data = await response.json();
+                const duration = ((Date.now() - startTime) / 1000).toFixed(2);
+
+                resultSection.style.display = 'block';
+
+                if (data.sql) {
+                    resultBox.className = 'result-box success';
+                    resultBox.textContent = data.sql;
+
+                    // Show stats
+                    stats.style.display = 'grid';
+                    document.getElementById('responseTime').textContent = duration + 's';
+                    document.getElementById('queryLength').textContent = data.sql.length;
+                } else if (data.error) {
+                    resultBox.className = 'result-box error';
+                    resultBox.textContent = 'Error: ' + data.error;
+                }
+            } catch (error) {
+                resultSection.style.display = 'block';
+                resultBox.className = 'result-box error';
+                resultBox.textContent = 'Network Error: ' + error.message;
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = 'Generate SQL Query';
+            }
+        }
+
+        function setQuestion(text) {
+            document.getElementById('question').value = text;
+        }
+
+        // Allow Enter key (Ctrl/Cmd + Enter to submit)
+        document.getElementById('question').addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                generateSQL();
+            }
+        });
+    </script>
+</body>
+</html>
